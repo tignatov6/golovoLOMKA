@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class Portal : MonoBehaviour {
+public class Portal : NetworkBehaviour {
     [Header ("Main Settings")]
     public Portal linkedPortal;
     public MeshRenderer screen;
@@ -21,7 +22,8 @@ public class Portal : MonoBehaviour {
     MeshFilter screenMeshFilter;
 
     void Awake () {
-        playerCam = Camera.main;
+        while (playerCam != null);
+            playerCam = Camera.main;
         portalCam = GetComponentInChildren<Camera> ();
         portalCam.enabled = false;
         trackedTravellers = new List<PortalTraveller> ();
