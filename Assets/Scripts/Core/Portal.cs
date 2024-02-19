@@ -16,21 +16,35 @@ public class Portal : NetworkBehaviour {
     // Private variables
     RenderTexture viewTexture;
     Camera portalCam;
-    Camera playerCam;
+    public Camera playerCam;
     Material firstRecursionMat;
     List<PortalTraveller> trackedTravellers;
     MeshFilter screenMeshFilter;
 
-    void Awake () {
-        while (playerCam != null);
-            playerCam = Camera.main;
+    void Start()
+    {
+
         portalCam = GetComponentInChildren<Camera> ();
         portalCam.enabled = false;
         trackedTravellers = new List<PortalTraveller> ();
         screenMeshFilter = screen.GetComponent<MeshFilter> ();
         screen.material.SetInt ("displayMask", 1);
+        screen.material.SetInt ("displayMask", 1);
     }
-
+    private void Update()
+    {
+        playerCam = Camera.main;
+    }
+    //[Client]
+    //private void FixedUpdate()
+    //{
+    //    if (!isLocalPlayer) return;
+    //    if(playerCam == null)
+    //    {
+    //        playerCam = Camera.main;
+    //        Debug.Log("Ищу камеру...");
+    //    }
+    //}
     void LateUpdate () {
         HandleTravellers ();
     }

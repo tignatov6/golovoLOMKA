@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class PortalTraveller : MonoBehaviour {
+public class PortalTraveller : NetworkBehaviour {
 
     public GameObject graphicsObject;
     public GameObject graphicsClone { get; set; }

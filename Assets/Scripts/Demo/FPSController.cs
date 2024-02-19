@@ -16,7 +16,7 @@ public class FPSController : PortalTraveller {
     public float rotationSmoothTime = 0.1f;
 
     CharacterController controller;
-    Camera cam;
+    public Camera cam;
     public float yaw;
     public float pitch;
     float smoothYaw;
@@ -36,20 +36,37 @@ public class FPSController : PortalTraveller {
 
     void Start () {
         cam = Camera.main;
+        if (isLocalPlayer)
+        {
+            cam.transform.parent = transform;
+            cam.transform.localPosition = new(0,0.6f,0);
+            gameObject.GetComponent<GravityGun>().cam = cam;
+        }
+
         if (lockCursor) {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
-
+        //if (!isLocalPlayer) 
+        //{
+        //    cam.gameObject.SetActive(false);
+        //}
         controller = GetComponent<CharacterController> ();
 
         yaw = transform.eulerAngles.y;
         pitch = cam.transform.localEulerAngles.x;
         smoothYaw = yaw;
         smoothPitch = pitch;
-    }
+        if(isLocalPlayer)
+        {
+            cam.enabled = true;
+        }
 
-    void Update () {
+    }
+    
+    void Update () 
+    {
+        if (!isLocalPlayer) return;
         if (Input.GetKeyDown (KeyCode.P)) {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -114,6 +131,7 @@ public class FPSController : PortalTraveller {
     }
 
     public override void Teleport (Transform fromPortal, Transform toPortal, Vector3 pos, Quaternion rot) {
+        if (!isLocalPlayer) return;
         transform.position = pos;
         Vector3 eulerRot = rot.eulerAngles;
         float delta = Mathf.DeltaAngle (smoothYaw, eulerRot.y);

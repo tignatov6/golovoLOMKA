@@ -13,7 +13,7 @@ namespace Mirror
 
         public int offsetX;
         public int offsetY;
-
+        public GameObject MenuCamera;
         void Awake()
         {
             manager = GetComponent<NetworkManager>();
@@ -61,14 +61,23 @@ namespace Mirror
 #else
                 // Server + Client
                 if (GUILayout.Button("Host (Server + Client)"))
+                {
                     manager.StartHost();
+
+                }
+
 #endif
 
                 // Client + IP (+ PORT)
                 GUILayout.BeginHorizontal();
 
                 if (GUILayout.Button("Client"))
+                {
                     manager.StartClient();
+
+                }
+
+                    
 
                 manager.networkAddress = GUILayout.TextField(manager.networkAddress);
                 // only show a port field if we have a port transport
