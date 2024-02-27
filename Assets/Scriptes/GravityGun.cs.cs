@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//using Mirror;
 
 public class GravityGun : MonoBehaviour
 {
@@ -13,11 +14,19 @@ public class GravityGun : MonoBehaviour
     public Rigidbody grabbedRB;
     public LayerMask CanPick;
 
-    void Update()
+    void Start()
     {
+        //if (!isLocalPlayer) return;
+        cam = Camera.main;
+ 
+    }
+    void FixedUpdate()
+    {
+        //if (!isLocalPlayer) return;
         if (grabbedRB)
-        {;
-            grabbedRB.MovePosition(Vector3.Lerp(grabbedRB.position, objectHolder.transform.position, Time.deltaTime * lerpSpeed));
+        {
+            //if (!isLocalPlayer) return;
+            grabbedRB.MovePosition(Vector3.Lerp(grabbedRB.position, objectHolder.transform.position, Time.fixedDeltaTime * lerpSpeed));
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -30,6 +39,7 @@ public class GravityGun : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
+            //if (!isLocalPlayer) return;
             if (grabbedRB)
             {
                 grabbedRB.useGravity = true;
@@ -38,10 +48,12 @@ public class GravityGun : MonoBehaviour
             }
             else
             {
-                cam = GetComponent<FPSController>().cam;
+                
+                //cam = GetComponent<FPSController>().cam;
                 objectHolder = cam.transform.GetChild(0);
                 RaycastHit hit;
                 Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
+                Debug.Log(Physics.Raycast(ray, out hit, maxGrabDistance, CanPick));
                 if (Physics.Raycast(ray, out hit, maxGrabDistance, CanPick))
                 {
                     grabbedObj = hit.collider.gameObject;
